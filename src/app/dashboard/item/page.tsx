@@ -33,7 +33,7 @@ const sanitizePath = (path: any) => {
 };
 
 export default function Item() {
-  useAuth()
+  useAuth();
   const [data, setData] = useState<any>([]);
   const { data: session } = useSession();
 
@@ -89,8 +89,8 @@ export default function Item() {
   };
 
   return (
-    <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6  max-h-[90vh] overflow-y-scroll">
-      <Card x-chunk="dashboard-06-chunk-0">
+    <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 overflow-y-scroll ">
+      <Card>
         <CardHeader className="flex flex-row item-center justify-between">
           <div className="flex">
             <Link href="/dashboard">
