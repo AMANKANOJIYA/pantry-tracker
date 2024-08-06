@@ -89,10 +89,12 @@ export default function Generated() {
             }
           } catch (error) {
             console.error("Failed to parse JSON:", error);
+            window.location.reload();
           }
         }
       } catch (error) {
         console.error("Error fetching data:", error);
+        window.location.reload();
       }
     };
 
@@ -102,7 +104,7 @@ export default function Generated() {
   const handleAddItemToPantry = async () => {
     try {
       const timestamp = new Date().getTime();
-      var path = sanitizePath(session?.user?.email) + "/products";
+      var path = `${sanitizePath(session?.user?.email)}` + "/products";
       const prodData = await createData(path, {
         name: data.name,
         description: data.description,
@@ -110,7 +112,7 @@ export default function Generated() {
         type: "generated",
         created_at: timestamp,
       });
-      path = sanitizePath(session?.user?.email) + "/items";
+      path = `${sanitizePath(session?.user?.email)}` + "/items";
       await Promise.all(
         data.items.map(async (product: any) => {
           const itemData = await createData(path, {

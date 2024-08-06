@@ -56,6 +56,8 @@ const sanitizePath = (path: any) => {
 };
 import storage from "@/utils/storegabucket";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 export default function Product() {
   useAuth();
@@ -69,6 +71,8 @@ export default function Product() {
   const [prodType, setProdType] = useState("");
   const [prodImage, setProdImage] = useState("");
   const params = useParams();
+  const { toast } = useToast();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -113,6 +117,10 @@ export default function Product() {
     const updatedItems: any = [...items];
     updatedItems[index] = [newElement.key, item];
     setItems(updatedItems);
+    toast({
+      title: "Item Edited successfully",
+      description: name,
+    });
   };
 
   const handleProdDetailSave = async () => {
@@ -133,10 +141,10 @@ export default function Product() {
       <div className="mx-auto grid flex-1 auto-rows-max gap-4">
         <div className="flex items-center gap-4">
           <Link href="/dashboard">
-          <Button variant="outline" size="icon" className="h-7 w-7">
-            <ChevronLeft className="h-4 w-4" />
-            <span className="sr-only">Back</span>
-          </Button>
+            <Button variant="outline" size="icon" className="h-7 w-7">
+              <ChevronLeft className="h-4 w-4" />
+              <span className="sr-only">Back</span>
+            </Button>
           </Link>
           <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
             {prodName}
@@ -145,7 +153,13 @@ export default function Product() {
             {prodType}
           </Badge>
           <div className="hidden items-center gap-2 md:ml-auto md:flex">
-            <Button variant="outline" size="sm">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                router.push("/dashboard/pantry");
+              }}
+            >
               Discard
             </Button>
             <Button size="sm" onClick={handleProdDetailSave}>
@@ -421,7 +435,13 @@ export default function Product() {
           </div>
         </div>
         <div className="flex items-center justify-center gap-2 md:hidden">
-          <Button variant="outline" size="sm">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              router.push("/dashboard/pantry");
+            }}
+          >
             Discard
           </Button>
           <Button size="sm" onClick={handleProdDetailSave}>

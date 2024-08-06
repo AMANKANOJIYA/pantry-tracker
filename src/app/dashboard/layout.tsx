@@ -40,11 +40,11 @@ export default function Dashboard({ children }: any) {
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link
-              href="/dashboard"
+              href="/dashboard/pantry"
               className="flex items-center gap-2 font-semibold"
             >
               <Package2 className="h-6 w-6" />
-              <span className="">AK Inc</span>
+              <span className="">Pantry</span>
             </Link>
             <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
               <Bell className="h-4 w-4" />
@@ -124,12 +124,13 @@ export default function Dashboard({ children }: any) {
                   className="flex items-center gap-2 text-lg font-semibold"
                 >
                   <Package2 className="h-6 w-6" />
-                  <span className="sr-only">AK Inc</span>
+                  <span className="sr-only">Pantry</span>
                 </Link>
                 <Link
                   href="/dashboard"
                   className={`mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 ${
-                    pathName === "/dashboard" ? "bg-muted text-foreground"
+                    pathName === "/dashboard"
+                      ? "bg-muted text-foreground"
                       : "text-muted-foreground"
                   } hover:text-foreground`}
                 >

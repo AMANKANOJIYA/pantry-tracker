@@ -30,6 +30,8 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { useSession } from "next-auth/react";
 import { createData } from "@/utils/database";
 import { useAuth } from "@/hook/useAuth";
+import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 interface product {
   name: string;
@@ -38,17 +40,20 @@ interface product {
 }
 
 const sanitizePath = (path: any) => {
-  return path.replace(/[.#$[\@]]/g, "_");
+  const text = path.replace(/[.#$[@\]]/g, "_");
+  return text;
 };
 
 export default function Generated() {
   useAuth();
   const [productName, setProductName] = useState("");
   const [productDescription, setProductDescription] = useState("");
-  const [productImage, setProductImage] = useState();
+  const [productImage, setProductImage] = useState<any>();
   const { data: session } = useSession();
   const [products, setProducts] = useState<product[]>([]);
   const type = "created";
+  const { toast } = useToast();
+  const router = useRouter();
 
   const handleAddItem = (event: any) => {
     setProducts((prev) => [
@@ -68,15 +73,15 @@ export default function Generated() {
   const handleSaveProduct = async () => {
     try {
       const timestamp = new Date().getTime();
-      var path = sanitizePath(session?.user?.email) + "/products";
-      const prodData = await createData(path, {
+      var path = `${sanitizePath(session?.user?.email)}` + "/products";
+      const prodData: any = await createData(path, {
         name: productName,
         description: productDescription,
         images: productImage,
         type: type,
         created_at: timestamp,
       });
-      path = sanitizePath(session?.user?.email) + "/items";
+      path = `${sanitizePath(session?.user?.email)}` + "/items";
       await Promise.all(
         products.map(async (product) => {
           const itemData = await createData(path, {
@@ -90,6 +95,14 @@ export default function Generated() {
           });
         })
       );
+      toast({
+        title: "All items added successfully",
+        description: productName,
+      });
+      setProductName("");
+      setProductDescription("");
+      setProductImage("");
+      setProducts([]);
     } catch (error) {
       console.error("Error adding documents: ", error);
     }
@@ -112,7 +125,13 @@ export default function Generated() {
             {type}
           </Badge>
           <div className="hidden items-center gap-2 md:ml-auto md:flex">
-            <Button variant="outline" size="sm">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                router.push("/dashboard");
+              }}
+            >
               Discard
             </Button>
             <Button size="sm" onClick={handleSaveProduct}>
@@ -333,10 +352,14 @@ export default function Generated() {
           </div>
         </div>
         <div className="flex items-center justify-center gap-2 md:hidden">
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" onClick={()=>{
+              router.push("/dashboard")
+            }}>
             Discard
           </Button>
-          <Button size="sm">Save Product</Button>
+          <Button size="sm" onClick={handleSaveProduct}>
+            Save Product
+          </Button>
         </div>
       </div>
     </main>

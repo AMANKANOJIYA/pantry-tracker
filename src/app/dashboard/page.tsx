@@ -2,18 +2,14 @@
 import { Button } from "@/components/ui/button";
 
 import { Input } from "@/components/ui/input";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hook/useAuth";
 
 export default function Dashboard() {
-  useAuth()
+  useAuth();
   const [name, setName] = useState("");
   const { data: session, status }: any = useSession();
   const router = useRouter();
@@ -49,7 +45,7 @@ export default function Dashboard() {
       <Card className="w-full h-full">
         <CardHeader>
           <h2 className="mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
-            Hello {name ? name : ""}, Welcome to AK Inc!
+            Hello {name ? name : ""}, Welcome to Pantry!
           </h2>
         </CardHeader>
         <CardContent>
